@@ -4,7 +4,7 @@ import sys
 import math
 from collections import Counter
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QLabel, QComboBox
+from PyQt4.QtGui import QLabel
 
 
 
@@ -39,7 +39,6 @@ def main(argv):
             #line = line.lower()
             ws = line.split()
             c.update(ws)
-        print(c.most_common(20))
         return(c.most_common(20))
 
     
