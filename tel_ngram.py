@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 
 import sys
-import math
 from collections import Counter
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QLabel
-
-
+#thanks to: http://pyqt.sourceforge.net/Docs/PyQt4/qlayout.html
 
 class wordFreqUI(QtGui.QWidget):
     def __init__(self):
@@ -14,69 +11,58 @@ class wordFreqUI(QtGui.QWidget):
         self.initUI()
 
     def initUI(self):
-        self.btn = QtGui.QPushButton("Click to enter filename", self)
-        self.btn.move(20, 20)
-        self.btn.clicked.connect(self.showDialog)
-
-        uni = QtGui.QCheckBox("Unigrams", self)
-        uni.move(20, 60)
-        uni.toggle()
-        # zorgen dat unigram checkbox herkent wordt
-        # en daadwerkelijk 20 meest frequente unigrammen geeft
-        bi = QtGui.QCheckBox("Bigrams", self)
-        bi.move(150, 60)
-        bi.toggle()
-        # zorgen dat bigram checkbox herkent wordt
-        # en daadwerkelijk 20 meest frequente bigrammen geeft
-
-        self.setGeometry(450, 450, 400, 300)
-        self.setWindowTitle("N-gram")
+        self.box = QtGui.QVBoxLayout()
+        self.setLayout(self.box)
+        self.combox = QtGui.QComboBox(self)
+        self.combox.addItems(["Bigrams","Unigrams"])
+        self.box.addWidget(self.combox)
+        self.combox.currentIndexChanged["QString"].connect(self.eventHandler)
+        self.button = QtGui.QPushButton("Choose a file", self)
+        self.button.clicked.connect(self.updateUniBi)
+        self.box.addWidget(self.button)
+        self.setGeometry(450, 450, 400, 100)
+        self.setWindowTitle("Word frequencies of Ngrams")
         self.show()
+
         
-    def showDialog(self):
-        text, ok = QtGui.QInputDialog.getText(self, "N-gram", "Enter filename:")
-        if ok:
-            self.le = QtGui.QLineEdit(self)
-            self.le.move(130, 22)
-            self.le.setText(str(text))
-        # zorgen dat het ingevoerde bestand meegegeven wordt aan de
-        # main functie waar het geopend kan worden en de n grammen
-        # berekend kunnen worden
+    def eventHandler(self):
+        if self.combox.currentText() == "Unigrams":
+            self.x = 1
+        else:
+            self.x = 2
+        return self.x
 
 
-    def unigram(self):
-        #moet nog aangepast worden
-        words = main(sys.argv)
-        count = 1
-        for (i,j) in words:
-            self.lbl = QtGui.QLabel(i,self)
-            self.lvl = QtGui.QLabel(str(j),self)
-            self.lbl = self.lbl.move(50, count*12)
-            self.lvl = self.lvl.move(250,count*12)
-            count = count + 1
+    def updateUniBi(self):
+        # open file: http://stackoverflow.com/questions/19996128/qtgui-qfiledialog-unicode-designations
+        userFile = QtGui.QFileDialog.getOpenFileName(self)
+        if self.x == 1:
+            uniCount = Counter()
+            for line in open(userFile):
+                uniCount.update(line.split())
+            for item in uniCount.most_common(20):
+                lbl = QtGui.QLabel(str(item[0]+' '+str(item[1])),self)
+                lbl.setAlignment(QtCore.Qt.AlignRight)
+                self.box.addWidget(lbl)
+        else:
+            biCount = Counter()
+            biDictio = {}
+            for line in open(userFile):
+                bi = len(line.split())
+                words = line.split()
+                for i in range(bi-1):
+                    biOpmaak = ''.join(words[:2])
+                    biGram = []
+                    biGram.append(biOpmaak)
+                    biCount.update(biGram)
+                    biDictio[biOpmaak] = words[:2]
+                    #words.pop(0) niet nodig om RT @... te laten zien?
+            for item in biCount.most_common(20):
+                lbl = QtGui.QLabel(' '.join(biDict.get(str(item[0])))+' '+str(item[1]),self)
+                lbl.setAlignment(QtCore.Qt.AlignRight)
+                self.box.addWidget(lbl)
 
-    def bigram(self):
-        #moet nog aangepast worden
-        words = main(sys.argv)
-        count = 1
-        for (i,j) in words:
-            self.lbl = QtGui.QLabel(i,self)
-            self.lvl = QtGui.QLabel(str(j),self)
-            self.lbl = self.lbl.move(50, count*12)
-            self.lvl = self.lvl.move(250,count*12)
-            count = count + 1
-
-
-def main(argv):
-    if len(argv) == 2:
-        infile = open(argv[1])
-        # tekstbestand wordt hier meegegeven
-        c = Counter()
-        for line in infile:
-            #line = line.lower()
-            ws = line.split()
-            c.update(ws)
-        return(c.most_common(20))
+        
 
     
 if __name__ == "__main__":
