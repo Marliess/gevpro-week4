@@ -3,7 +3,6 @@
 import sys
 from collections import Counter
 from PyQt4 import QtGui, QtCore
-import time
 #thanks to: http://pyqt.sourceforge.net/Docs/PyQt4/qlayout.html
 
 class wordFreqUI(QtGui.QWidget):
