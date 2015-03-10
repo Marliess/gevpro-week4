@@ -36,7 +36,6 @@ def main(argv):
         infile = open(argv[1])
         c = Counter()
         for line in infile:
-            #line = line.lower()    maakt het uit of er hoofdletters zijn of niet?
             ws = line.split()
             c.update(ws)
         return(c.most_common(20))
