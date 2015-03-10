@@ -54,12 +54,10 @@ class wordFreqUI(QtGui.QWidget):
             for line in open(userFile):
                 uniCount.update(line.split())
                 count = 1
-            for (i,j) in uniCount.most_common(20):
-                lbl = QtGui.QLabel(i,self)
-                lvl = QtGui.QLabel(str(j),self)
-                self.box.addWidget(lbl), self.box.addWidget(lvl)
-                #lbl = QtGui.QLabel(str(item[0]+' '+str(item[1])),self)
-                #self.box.addWidget(lbl)
+            for item in uniCount.most_common(20):
+                lbl = QtGui.QLabel(str(item[0]+"        " +str(item[1])),self)
+                self.box.addWidget(lbl)
+
         else:
             biCount = Counter()
             biDictio = {}
