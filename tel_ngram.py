@@ -32,7 +32,7 @@ class wordFreqUI(QtGui.QWidget):
 
         
     def eventHandler(self):
-        """Returns a 1 if the user want a Unigrams, return a 2
+        """Returns a 1 if the user want Unigrams, return a 2
         if the user want Bigrams. """
         if self.combox.currentText() == "Unigrams":
             self.x = 1
@@ -53,9 +53,8 @@ class wordFreqUI(QtGui.QWidget):
             uniCount = Counter()
             for line in open(userFile):
                 uniCount.update(line.split())
-                count = 1
             for item in uniCount.most_common(20):
-                lbl = QtGui.QLabel(str(item[0]+"        " +str(item[1])),self)
+                lbl = QtGui.QLabel(str(item[0]+"   " +str(item[1])),self)
                 self.box.addWidget(lbl)
 
         else:
@@ -66,20 +65,20 @@ class wordFreqUI(QtGui.QWidget):
                 words = line.split()
                 for i in range(bi-1):
                     """Select all bigrams in a sentence, except the last words"""
-                    biSelect = ''.join(words[:2])
+                    biSelect = "".join(words[:2])
                     biGram = []
                     """Add the bigrams to the list biGram"""
                     biGram.append(biSelect)
                     """Update the most frequent bigrams"""
                     biCount.update(biGram)
                     biDictio[biSelect] = words[:2]
-                    #words.pop(0) niet nodig om RT @... te laten zien?
+                    """You see Bigrams instead of RT@..."""
+                    words.pop(0)
             for item in biCount.most_common(20):
-                lbl = QtGui.QLabel(' '.join(biDictio.get(str(item[0])))+' '+str(item[1]),self)
+                lbl = QtGui.QLabel(" ".join(biDictio.get(str(item[0])))+"   "+str(item[1]),self)
                 self.box.addWidget(lbl)
 
         
-
     
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
