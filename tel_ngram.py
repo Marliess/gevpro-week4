@@ -46,8 +46,7 @@ class wordFreqUI(QtGui.QWidget):
         """The user wants a Unigram(self.x == 1). File will be openend
         and with Counter and most_common() we get the 20 most frequent
         unigrams. These are put in a string and will be displayed on the
-        screen. Align right so the frequencies will be displayed among
-        each other"""
+        screen. """
         if self.x == 1:
             uniCount = Counter()
             for line in open(userFile):
@@ -55,7 +54,11 @@ class wordFreqUI(QtGui.QWidget):
             for item in uniCount.most_common(20):
                 lbl = QtGui.QLabel(str(item[0]+"   " +str(item[1])),self)
                 self.box.addWidget(lbl)
-
+        """The user wants a Bigram. File will be openend
+        and with Counter and most_common() we get the 20 most frequent
+        bigrams. A dictionary is created to store the bigrams and their
+        frequencies. These are put in a string and will be displayed on the
+        screen. """
         else:
             biCount = Counter()
             biDictio = {}
@@ -63,7 +66,7 @@ class wordFreqUI(QtGui.QWidget):
                 bi = len(line.split())
                 words = line.split()
                 for i in range(bi-1):
-                    """Select all bigrams in a sentence, except the last words"""
+                    """Select all bigrams in a sentence"""
                     biSelect = "".join(words[:2])
                     biGram = []
                     """Add the bigrams to the list biGram"""
