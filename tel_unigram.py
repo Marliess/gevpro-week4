@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import sys
-import math
 from collections import Counter
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QLabel
