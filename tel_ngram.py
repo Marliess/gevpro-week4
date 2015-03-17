@@ -47,6 +47,12 @@ class wordFreqUI(QtGui.QWidget):
         and with Counter and most_common() we get the 20 most frequent
         unigrams. These are put in a string and will be displayed on the
         screen. """
+                        
+        """The user wants a Bigram. File will be openend
+        and with Counter and most_common() we get the 20 most frequent
+        bigrams. A dictionary is created to store the bigrams and their
+        frequencies. These are put in a string and will be displayed on the
+        screen. """
         if self.x == 1:
             uniCount = Counter()
             for line in open(userFile):
@@ -54,11 +60,6 @@ class wordFreqUI(QtGui.QWidget):
             for item in uniCount.most_common(20):
                 lbl = QtGui.QLabel(str(item[0]+"   " +str(item[1])),self)
                 self.box.addWidget(lbl)
-        """The user wants a Bigram. File will be openend
-        and with Counter and most_common() we get the 20 most frequent
-        bigrams. A dictionary is created to store the bigrams and their
-        frequencies. These are put in a string and will be displayed on the
-        screen. """
         else:
             biCount = Counter()
             biDictio = {}
